@@ -76,6 +76,8 @@ ktpass [-?] | [/out filename] [/princ SPN] [/mapuser target_user] [/mapop {add|s
 * `/?` 또는 `-?`:
   * `ktpass` 명령어의 사용법 및 옵션 목록을 표시합니다.
 
+`ktpas` 커맨드의 사용법에 따라서 다음과 같이 Keytab 파일을 생성할 수 있습니다.
+
 ```
 ktpass -out webservice.keytab \
        -princ HTTP/myservice.example.com@EXAMPLE.COM \
@@ -85,8 +87,10 @@ ktpass -out webservice.keytab \
        -crypto AES256-SHA1 -mapop set
 ```
 
+다음은 실제 적용 사례입니다.
+
 ```
-ktpass -out cloudera.keytab -princ cloudera@DATALAKE.IBK.CO.KR -mapuser DATALAKE_PROD\cloudera -pass Password!! -ptype KRB5_NT_PRINCIPAL -crypto all -mapop set
+ktpass -out cloudera.keytab -princ cloudera@DATALAKE.NET -mapuser DATALAKE_PROD\cloudera -pass Password!! -ptype KRB5_NT_PRINCIPAL -crypto all -mapop set
 ```
 
 ### Cloudera의 Kerbeors Keytab Format
@@ -112,18 +116,10 @@ https://docs.cloudera.com/cdp-private-cloud-base/7.3.1/security-kerberos-authent
 | ZooKeeper                | zookeeper    | zookeeper         |
 | NiFi                     | nifi         | nifi              |
 
-## Keytab 파일을 생성하는 방법
-
-* Active Directory가 설치되어 있는 윈도에서
-  * `ktpass -out cloudera.keytab -princ cloudera@DATALAKE.IBK.CO.KR -mapuser DATALAKE_PROD\cloudera -pass Password!! -ptype KRB5_NT_PRINCIPAL -crypto all -mapop set`
-* Kerberos가 활성화 되어 있는 Linux에서
-  * 
-
-
 ## Keytab 파일의 Pricipal 확인
 
 ```
-$ klist -e -k -t hdfs.keytab
+# klist -e -k -t hdfs.keytab
 Keytab name: WRFILE:hdfs.keytab
 slot KVNO Principal
 ---- ---- ---------------------------------------------------------------------
