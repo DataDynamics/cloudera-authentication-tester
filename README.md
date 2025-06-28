@@ -27,6 +27,8 @@ Cloduera CDP에서는 LDAP 인증 및 Kerberos 인증을 동시에 적용할 수
 
 ## Kerberos Keytab 파일 생성
 
+Keytab 파일이 있으면 패스워드 없이 principal을 사용할 수 있습니다. 다만 보안에 취약하므로 관리를 철저하게 해야 합니다.
+
 Windows AD Server에서 Keytab 파일을 생성하는 방법은 다음과 같습니다.
 
 ```
