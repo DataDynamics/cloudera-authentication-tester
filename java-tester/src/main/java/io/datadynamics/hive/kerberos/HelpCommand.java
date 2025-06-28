@@ -12,8 +12,8 @@ public class HelpCommand implements Command {
     @Override
     public String help() {
         String builder = "USAGE:" + "\n" +
-                "hive-test --user <User> --keytab <Password> --url \"jdbc:hive://...\" --query \"SELECT 1\"" + "\n" +
-                "hive-test --user <User> --keytab <Password> --url \"jdbc:hive://...\" --queryFile \"user.sql\"" + "\n";
+                "hive-kerberos --user <User> --keytab <Keytab> --url \"jdbc:hive://...\" --query \"SELECT 1\"" + "\n" +
+                "hive-kerberos --user <User> --keytab <Keytab> --url \"jdbc:hive://...\" --queryFile \"user.sql\"" + "\n";
         return builder;
     }
 

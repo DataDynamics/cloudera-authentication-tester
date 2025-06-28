@@ -12,8 +12,8 @@ public class HelpCommand implements Command {
     @Override
     public String help() {
         String builder = "USAGE:" + "\n" +
-                "impala-test --user <User> --pass <Password> --url \"jdbc:impala://...\" --query \"SELECT 1\"" + "\n" +
-                "impala-test --user <User> --pass <Password> --url \"jdbc:impala://...\" --queryFile \"user.sql\"" + "\n";
+                "impala-ldap --user <User> --pass <Password> --url \"jdbc:impala://...\" --query \"SELECT 1\"" + "\n" +
+                "impala-ldap --user <User> --pass <Password> --url \"jdbc:impala://...\" --queryFile \"user.sql\"" + "\n";
         return builder;
     }
 
