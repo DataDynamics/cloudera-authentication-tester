@@ -31,8 +31,6 @@ def add_user_and_set_password(args):
         'accountExpires': '0',  # Never expires
     }
     
-    print(attributes)
-
     if user_dn_exists(conn, f"CN={args.new_username},{args.user_base_dn}"):
         if delete_user_dn(conn, f"CN={args.new_username},{args.user_base_dn}"):
             print("User deleted.")
@@ -125,8 +123,6 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     
-    print(args)
-
     result = add_user_and_set_password(args)
 
     if result:
