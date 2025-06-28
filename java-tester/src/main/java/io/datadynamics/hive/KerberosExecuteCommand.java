@@ -19,7 +19,7 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 
-public class ExecuteCommand implements Command {
+public class KerberosExecuteCommand implements Command {
 
     @Override
     public void execute(String username, String keytab, String url, String query, List<String> args) throws Exception {

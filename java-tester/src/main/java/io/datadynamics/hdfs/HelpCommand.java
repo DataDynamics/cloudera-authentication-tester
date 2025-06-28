@@ -13,7 +13,7 @@ public class HelpCommand implements Command {
     public String help() {
         StringBuilder builder = new StringBuilder();
         builder.append("USAGE:").append("\n");
-        builder.append("hdfs-test --username <KerberosUsername> --keytab <KerberosKeytab> <COMMAND>").append("\n");
+        builder.append("hdfs-test --user <KerberosUsername> --keytab <KerberosKeytab> <COMMAND>").append("\n");
         builder.append("<COMMAND>").append("\n");
         builder.append("        ls <DIR>   - 디렉토리 리스트 표시").append("\n");
         builder.append("        info <DIR/FILE> - 파일 정보 표시").append("\n");

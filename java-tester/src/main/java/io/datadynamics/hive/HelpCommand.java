@@ -13,8 +13,8 @@ public class HelpCommand implements io.datadynamics.hive.Command {
     public String help() {
         StringBuilder builder = new StringBuilder();
         builder.append("USAGE:").append("\n");
-        builder.append("hive-test --username <KerberosUsername> --keytab <KerberosKeytab> --url \"jdbc:hive://...\" --query \"SELECT 1\"").append("\n");
-        builder.append("hive-test --username <KerberosUsername> --keytab <KerberosKeytab> --url \"jdbc:hive://...\" --queryFile \"user.sql\"").append("\n");
+        builder.append("hive-test --user <User> --pass <Password> --url \"jdbc:hive://...\" --query \"SELECT 1\"").append("\n");
+        builder.append("hive-test --user <User> --pass <Password> --url \"jdbc:hive://...\" --queryFile \"user.sql\"").append("\n");
         return builder.toString();
     }
 
