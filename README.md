@@ -113,7 +113,10 @@ ktpass -out webservice.keytab \
 다음은 실제 적용 사례입니다.
 
 ```
-ktpass -out cloudera.keytab -princ cloudera@DATALAKE.NET -mapuser DATALAKE_PROD\cloudera -pass Password!! -ptype KRB5_NT_PRINCIPAL -crypto all -mapop set
+ktpass -out cloudera.keytab -princ cloudera@DATALAKE.NET \
+                            -mapuser DATALAKE_PROD\cloudera \
+                            -pass Password!! \
+                            -ptype KRB5_NT_PRINCIPAL -crypto all -mapop set
 ```
 
 ### Cloudera의 Kerbeors Keytab Format
