@@ -15,7 +15,13 @@ mvn clean package
 Windows AD Server에서 Keytab 파일을 생성하는 방법은 다음과 같습니다.
 
 ```
-ktpass [-?] | [/out filename] [/princ SPN] [/mapuser target_user] [/mapop {add|set|delete}] [/pass {password|*|+rndpass}] [/minlen length] [/maxlen length] [/oldpass old_password] [/setpass] [/in filename] [/crypto {type}] [/ptype {KRB5_NT_PRINCIPAL | KRB5_NT_SRV_INST | KRB5_NT_SRV_HST}] [/kvno KeyVersionNumber] [/target server_name] [/rndcrypt] [/nocopy] [/answer]
+ktpass [-?] | [/out filename] [/princ SPN] [/mapuser target_user] \
+              [/mapop {add|set|delete}] [/pass {password|*|+rndpass}] \
+              [/minlen length] [/maxlen length] [/oldpass old_password] \
+              [/setpass] [/in filename] [/crypto {type}] \
+              [/ptype {KRB5_NT_PRINCIPAL | KRB5_NT_SRV_INST | KRB5_NT_SRV_HST}] \
+              [/kvno KeyVersionNumber] [/target server_name] \
+              [/rndcrypt] [/nocopy] [/answer]
 ```
 
 각 옵션은 다음과 같습니다.
