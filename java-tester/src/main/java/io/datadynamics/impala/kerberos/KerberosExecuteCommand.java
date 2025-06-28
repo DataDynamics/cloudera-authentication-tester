@@ -1,20 +1,15 @@
 package io.datadynamics.impala.kerberos;
 
-import com.cloudera.hive.jdbc.HS2DataSource;
 import io.datadynamics.client.ResultSetTablePrinter;
 import io.datadynamics.client.common.DefaultResourceLoader;
 import io.datadynamics.client.common.Resource;
 import io.datadynamics.client.kerberos.KerberosAction;
 import io.datadynamics.client.kerberos.KerberosKeytabUser;
-import io.datadynamics.hive.HiveConfigurator;
 import org.apache.commons.io.FileUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hive.conf.HiveConf;
-import org.apache.hadoop.security.UserGroupInformation;
 
-import javax.sql.DataSource;
 import java.io.File;
-import java.security.PrivilegedExceptionAction;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,6 +18,20 @@ import java.util.Collection;
 import java.util.List;
 
 public class KerberosExecuteCommand implements Command {
+
+    public static void executeQuery(Connection conn, String query) throws SQLException {
+        long startTime = System.currentTimeMillis();
+
+        PreparedStatement psmt = conn.prepareStatement(query);
+        ResultSet rs = psmt.executeQuery();
+        ResultSetTablePrinter.printResultSet(rs);
+        rs.close();
+        psmt.close();
+        conn.close();
+        long finishTime = System.currentTimeMillis();
+
+        System.out.println("Elapsed Time (sec)  : " + (finishTime - startTime) / 1000);
+    }
 
     @Override
     public void execute(String username, String keytab, String url, String query, List<String> args) throws Exception {
@@ -47,20 +56,6 @@ public class KerberosExecuteCommand implements Command {
         executeQuery(conn, query);
 
         kerberosUser.logout();
-    }
-
-    public static void executeQuery(Connection conn, String query) throws SQLException {
-        long startTime = System.currentTimeMillis();
-
-        PreparedStatement psmt = conn.prepareStatement(query);
-        ResultSet rs = psmt.executeQuery();
-        ResultSetTablePrinter.printResultSet(rs);
-        rs.close();
-        psmt.close();
-        conn.close();
-        long finishTime = System.currentTimeMillis();
-
-        System.out.println("Elapsed Time (sec)  : " + (finishTime - startTime) / 1000);
     }
 
     @Override

@@ -1,9 +1,8 @@
 package io.datadynamics.hive.kerberos;
 
-import com.nimbusds.jose.util.IOUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.FileInputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +74,7 @@ public class KerberosTester {
         }
 
         if (!StringUtils.isEmpty(queryFile) && new java.io.File(queryFile).exists()) {
-            q = IOUtils.readInputStreamToString(new FileInputStream(queryFile), Charset.defaultCharset());
+            q = FileUtils.readFileToString(new java.io.File(queryFile), Charset.defaultCharset());
         }
 
         if (StringUtils.isEmpty(queryFile) && !StringUtils.isEmpty(query)) {

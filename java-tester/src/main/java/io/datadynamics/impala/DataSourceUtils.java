@@ -17,11 +17,11 @@ public class DataSourceUtils {
         String schemaName = "default";
         Map<String, String> urlProperties = new LinkedHashMap<>();
         urlProperties.putAll(getAuthenticationSettings("1", "sasl", hostname, "DATALAKE.NET", "impala"));
-        String additionalParameters = urlProperties.entrySet().stream().map(entry -> String.format(";%s=%s", new Object[]{entry.getKey(), entry.getValue()})).collect(Collectors.joining());
-        if (StringUtils.isNoneBlank(new CharSequence[]{schemaName, hostname, port}))
-            return String.format("jdbc:impala://%s:%s/%s", new Object[]{hostname, port, schemaName}) + additionalParameters;
-        if (StringUtils.isNoneBlank(new CharSequence[]{hostname, port}) && StringUtils.isBlank(schemaName))
-            return String.format("jdbc:impala://%s:%s", new Object[]{hostname, port}) + additionalParameters;
+        String additionalParameters = urlProperties.entrySet().stream().map(entry -> String.format(";%s=%s", entry.getKey(), entry.getValue())).collect(Collectors.joining());
+        if (StringUtils.isNoneBlank(schemaName, hostname, port))
+            return String.format("jdbc:impala://%s:%s/%s", hostname, port, schemaName) + additionalParameters;
+        if (StringUtils.isNoneBlank(hostname, port) && StringUtils.isBlank(schemaName))
+            return String.format("jdbc:impala://%s:%s", hostname, port) + additionalParameters;
         throw new IllegalArgumentException("Invalid JDBC URI format");
     }
 

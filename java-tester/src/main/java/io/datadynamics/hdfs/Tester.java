@@ -38,7 +38,7 @@ public class Tester {
             printHelpAndExit();
         }
 
-        if (new File(keytab).exists() == false) {
+        if (!new File(keytab).exists()) {
             System.err.println("Keytab 파일이 존재하지 않습니다. 파일: " + keytab);
             printHelpAndExit();
         }

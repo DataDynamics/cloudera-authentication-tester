@@ -11,11 +11,10 @@ public class HelpCommand implements Command {
 
     @Override
     public String help() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("USAGE:").append("\n");
-        builder.append("impala-test --user <User> --keytab <Password> --url \"jdbc:hive://...\" --query \"SELECT 1\"").append("\n");
-        builder.append("impala-test --user <User> --keytab <Password> --url \"jdbc:hive://...\" --queryFile \"user.sql\"").append("\n");
-        return builder.toString();
+        String builder = "USAGE:" + "\n" +
+                "impala-test --user <User> --keytab <Password> --url \"jdbc:hive://...\" --query \"SELECT 1\"" + "\n" +
+                "impala-test --user <User> --keytab <Password> --url \"jdbc:hive://...\" --queryFile \"user.sql\"" + "\n";
+        return builder;
     }
 
 }

@@ -4,7 +4,10 @@ import com.cloudera.impala.jdbc.DataSource;
 import io.datadynamics.client.kerberos.KerberosAction;
 import io.datadynamics.client.kerberos.KerberosKeytabUser;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class KerberosJdbcTester {
 

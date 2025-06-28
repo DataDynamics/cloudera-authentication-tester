@@ -16,6 +16,20 @@ import java.util.List;
 
 public class LdapExecuteCommand implements Command {
 
+    public static void executeQuery(Connection conn, String query) throws SQLException {
+        long startTime = System.currentTimeMillis();
+
+        PreparedStatement psmt = conn.prepareStatement(query);
+        ResultSet rs = psmt.executeQuery();
+        ResultSetTablePrinter.printResultSet(rs);
+        rs.close();
+        psmt.close();
+        conn.close();
+        long finishTime = System.currentTimeMillis();
+
+        System.out.println("Elapsed Time (sec)  : " + (finishTime - startTime) / 1000);
+    }
+
     @Override
     public void execute(String username, String password, String url, String query, List<String> args) throws Exception {
         DefaultResourceLoader defaultResourceLoader = new DefaultResourceLoader();
@@ -34,20 +48,6 @@ public class LdapExecuteCommand implements Command {
 
         Connection conn = ds.getConnection();
         executeQuery(conn, query);
-    }
-
-    public static void executeQuery(Connection conn, String query) throws SQLException {
-        long startTime = System.currentTimeMillis();
-
-        PreparedStatement psmt = conn.prepareStatement(query);
-        ResultSet rs = psmt.executeQuery();
-        ResultSetTablePrinter.printResultSet(rs);
-        rs.close();
-        psmt.close();
-        conn.close();
-        long finishTime = System.currentTimeMillis();
-
-        System.out.println("Elapsed Time (sec)  : " + (finishTime - startTime) / 1000);
     }
 
     @Override

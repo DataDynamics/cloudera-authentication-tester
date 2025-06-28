@@ -22,6 +22,29 @@ import java.util.List;
 
 public class LdapExecuteCommand implements Command {
 
+    public static DataSource dataSource() {
+        HS2DataSource ds = new HS2DataSource();
+        ds.setURL("");
+        return ds;
+    }
+
+    public static void executeQuery(Connection conn, String query) throws SQLException {
+        long startTime = System.currentTimeMillis();
+
+        PreparedStatement psmt = conn.prepareStatement(query);
+        ResultSet rs = psmt.executeQuery();
+        int rows = 0;
+        while (rs.next()) {
+            rows++;
+        }
+        long finishTime = System.currentTimeMillis();
+        rs.close();
+        psmt.close();
+        conn.close();
+
+        System.out.println("Elapsed Time (sec)  : " + (finishTime - startTime) / 1000);
+    }
+
     @Override
     public void execute(String username, String keytab, String url, String query, List<String> args) throws Exception {
 
@@ -50,29 +73,6 @@ public class LdapExecuteCommand implements Command {
         kerberosUser.logout();
 
 
-    }
-
-    public static DataSource dataSource() {
-        HS2DataSource ds = new HS2DataSource();
-        ds.setURL("");
-        return ds;
-    }
-
-    public static void executeQuery(Connection conn, String query) throws SQLException {
-        long startTime = System.currentTimeMillis();
-
-        PreparedStatement psmt = conn.prepareStatement(query);
-        ResultSet rs = psmt.executeQuery();
-        int rows = 0;
-        while (rs.next()) {
-            rows++;
-        }
-        long finishTime = System.currentTimeMillis();
-        rs.close();
-        psmt.close();
-        conn.close();
-
-        System.out.println("Elapsed Time (sec)  : " + (finishTime - startTime) / 1000);
     }
 
     @Override
