@@ -1,18 +1,12 @@
 param(
     [string]$principal,
-    [string]$mapuser,
-    [string]$password
+    [string]$mapuser
 )
 
-Write-Host $principal
-Write-Host $mapuser
-Write-Host $password
-
-
 # 인자 체크
-if (-not $principal -or -not $mapuser -or -not $password) {
-    Write-Host "Usage: gen-keytab.ps1 -principal <VALUE> -mapuser <VALUE> -password <VALUE>"
-    Write-Host "Usage: gen-keytab.ps1 -principal cloudera@DATALAKE.NET -mapuser DATALAKE_PROD\cloudera -password @123qwe"
+if (-not $principal -or -not $mapuser) {
+    Write-Host "Usage: gen-keytab.ps1 -principal <VALUE> -mapuser <VALUE>"
+    Write-Host "Usage: gen-keytab.ps1 -principal cloudera@DATALAKE.NET -mapuser DATALAKE_PROD\cloudera"
     exit 1
 }
 
