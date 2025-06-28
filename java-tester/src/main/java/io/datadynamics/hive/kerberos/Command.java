@@ -1,4 +1,4 @@
-package io.datadynamics.hive;
+package io.datadynamics.hive.kerberos;
 
 import java.util.List;
 

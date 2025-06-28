@@ -1,11 +1,11 @@
-package io.datadynamics.hive;
+package io.datadynamics.hive.ldap;
 
-public class KerberosCommandFactory {
+public class LdapCommandFactory {
 
     public static Command getCommand(String name) {
         switch (name) {
             case "execute":
-                return new KerberosExecuteCommand();
+                return new LdapExecuteCommand();
             default:
                 return new HelpCommand();
         }

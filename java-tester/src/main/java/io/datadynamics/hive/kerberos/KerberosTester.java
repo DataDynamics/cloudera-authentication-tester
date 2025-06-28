@@ -1,4 +1,4 @@
-package io.datadynamics.hive;
+package io.datadynamics.hive.kerberos;
 
 import com.nimbusds.jose.util.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -8,7 +8,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LdapTester {
+public class KerberosTester {
 
     public static void main(String[] args) throws Exception {
         if (args.length < 5) {
@@ -16,7 +16,7 @@ public class LdapTester {
             System.exit(1);
         }
 
-        String username = null, password = null, url = null, query = null, queryFile = null;
+        String username = null, keytab = null, url = null, query = null, queryFile = null;
         int i = 0;
         // 옵션 파싱
         while (i < args.length && args[i].startsWith("--")) {
@@ -25,8 +25,8 @@ public class LdapTester {
                     if (++i < args.length) username = args[i++];
                     else printHelpAndExit();
                     break;
-                case "--pass":
-                    if (++i < args.length) password = args[i++];
+                case "--keytab":
+                    if (++i < args.length) keytab = args[i++];
                     else printHelpAndExit();
                     break;
                 case "--url":
@@ -59,7 +59,7 @@ public class LdapTester {
             cmdArgs.add(args[i++]);
         }
 
-        if (username == null || password == null || url == null) {
+        if (username == null || keytab == null || url == null) {
             printHelpAndExit();
         }
 
@@ -83,7 +83,7 @@ public class LdapTester {
         }
 
 
-        cmd.execute(username, password, url, q, cmdArgs);
+        cmd.execute(username, keytab, url, q, cmdArgs);
     }
 
     static void printHelp() {

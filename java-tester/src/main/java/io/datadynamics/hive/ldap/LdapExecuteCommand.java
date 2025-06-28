@@ -1,9 +1,10 @@
-package io.datadynamics.hive;
+package io.datadynamics.hive.ldap;
 
 import com.cloudera.hive.jdbc.HS2DataSource;
 import io.datadynamics.client.common.DefaultResourceLoader;
 import io.datadynamics.client.common.Resource;
 import io.datadynamics.client.kerberos.KerberosKeytabUser;
+import io.datadynamics.hive.HiveConfigurator;
 import org.apache.commons.io.FileUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hive.conf.HiveConf;
@@ -19,7 +20,7 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 
-public class KerberosExecuteCommand implements Command {
+public class LdapExecuteCommand implements Command {
 
     @Override
     public void execute(String username, String keytab, String url, String query, List<String> args) throws Exception {

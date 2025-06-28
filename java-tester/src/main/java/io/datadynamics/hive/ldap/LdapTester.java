@@ -1,6 +1,7 @@
-package io.datadynamics.hive;
+package io.datadynamics.hive.ldap;
 
 import com.nimbusds.jose.util.IOUtils;
+import io.datadynamics.hive.kerberos.HelpCommand;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.FileInputStream;
@@ -8,7 +9,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KerberosTester {
+public class LdapTester {
 
     public static void main(String[] args) throws Exception {
         if (args.length < 5) {
@@ -16,7 +17,7 @@ public class KerberosTester {
             System.exit(1);
         }
 
-        String username = null, keytab = null, url = null, query = null, queryFile = null;
+        String username = null, password = null, url = null, query = null, queryFile = null;
         int i = 0;
         // 옵션 파싱
         while (i < args.length && args[i].startsWith("--")) {
@@ -25,8 +26,8 @@ public class KerberosTester {
                     if (++i < args.length) username = args[i++];
                     else printHelpAndExit();
                     break;
-                case "--keytab":
-                    if (++i < args.length) keytab = args[i++];
+                case "--pass":
+                    if (++i < args.length) password = args[i++];
                     else printHelpAndExit();
                     break;
                 case "--url":
@@ -48,7 +49,7 @@ public class KerberosTester {
 
         if (i >= args.length) printHelpAndExit();
         String cmdName = args[i++];
-        Command cmd = KerberosCommandFactory.getCommand(cmdName);
+        Command cmd = LdapCommandFactory.getCommand(cmdName);
         if (cmd == null) {
             System.err.println("알 수 없는 명령: " + cmdName);
             printHelpAndExit();
@@ -59,7 +60,7 @@ public class KerberosTester {
             cmdArgs.add(args[i++]);
         }
 
-        if (username == null || keytab == null || url == null) {
+        if (username == null || password == null || url == null) {
             printHelpAndExit();
         }
 
@@ -83,7 +84,7 @@ public class KerberosTester {
         }
 
 
-        cmd.execute(username, keytab, url, q, cmdArgs);
+        cmd.execute(username, password, url, q, cmdArgs);
     }
 
     static void printHelp() {
