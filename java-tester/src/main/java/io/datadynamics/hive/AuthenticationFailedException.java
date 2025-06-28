@@ -1,6 +1,7 @@
 package io.datadynamics.hive;
 
 public class AuthenticationFailedException extends RuntimeException {
+
     public AuthenticationFailedException() {
         super();
     }
@@ -20,4 +21,5 @@ public class AuthenticationFailedException extends RuntimeException {
     protected AuthenticationFailedException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
+
 }
