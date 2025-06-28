@@ -77,10 +77,34 @@ ktpass [-?] | [/out filename] [/princ SPN] [/mapuser target_user] [/mapop {add|s
   * `ktpass` 명령어의 사용법 및 옵션 목록을 표시합니다.
 
 ```
-ktpass -out C:\keytabs\webservice.keytab \
+ktpass -out webservice.keytab \
        -princ HTTP/myservice.example.com@EXAMPLE.COM \
        -mapuser svc_webservice@example.com \
        -pass YourComplexPassword! \
        -ptype KRB5_NT_PRINCIPAL \
        -crypto AES256-SHA1 -mapop set
-``
+```
+
+```
+ktpass -out user.keytab -princ user@realm -mapuser DATALAKE\user -pass password  -ptype KRB5_NT_PRINSIPAL -kvno 0 -crypto AES256-SHA1
+```
+
+### Cloudera의 Kerbeors Keytab Format
+
+* 기본 형식 : `service[/host]@REALM`
+ * 예 : `hdfs/data-node-1.example.com@EXAMPLE.COM`
+
+```
+
+## Keytab 파일의 Pricipal 확인
+
+```
+$ klist -e -k -t hdfs.keytab
+Keytab name: WRFILE:hdfs.keytab
+slot KVNO Principal
+---- ---- ---------------------------------------------------------------------
+   1    7    HTTP/fully.qualified.domain.name@YOUR-REALM.COM (DES cbc mode with CRC-32)
+   2    7    HTTP/fully.qualified.domain.name@YOUR-REALM.COM (Triple DES cbc mode with HMAC/sha1)
+   3    7    hdfs/fully.qualified.domain.name@YOUR-REALM.COM (DES cbc mode with CRC-32)
+   4    7    hdfs/fully.qualified.domain.name@YOUR-REALM.COM (Triple DES cbc mode with HMAC/sha1)
+```
