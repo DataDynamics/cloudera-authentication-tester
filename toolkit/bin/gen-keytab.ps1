@@ -4,6 +4,11 @@ param(
     [string]$password
 )
 
+Write-Host $principal
+Write-Host $mapuser
+Write-Host $password
+
+
 # 인자 체크
 if (-not $principal -or -not $mapuser -or -not $password) {
     Write-Host "Usage: gen-keytab.ps1 -principal <VALUE> -mapuser <VALUE> -password <VALUE>"
@@ -11,4 +16,4 @@ if (-not $principal -or -not $mapuser -or -not $password) {
     exit 1
 }
 
-Write-Host ktpass -out "$principal".keytab -princ "$principal" -mapuser "$mapuser" -pass "$password" -ptype KRB5_NT_PRINCIPAL -crypto all -mapop set
+ktpass -out "$principal".keytab -princ "$principal" -mapuser "$mapuser" -pass "$password" -ptype KRB5_NT_PRINCIPAL -crypto all -mapop set
