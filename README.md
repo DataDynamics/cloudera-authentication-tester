@@ -154,3 +154,21 @@ slot KVNO Principal
    3    7    hdfs/fully.qualified.domain.name@YOUR-REALM.COM (DES cbc mode with CRC-32)
    4    7    hdfs/fully.qualified.domain.name@YOUR-REALM.COM (Triple DES cbc mode with HMAC/sha1)
 ```
+
+## Keytab 파일의 다수의 Principal 적용
+
+1개의 Keytab 파일에 다수의 principal을 적용하려면 우선 개별 principal의 keytab 파일이 있어야 하며, Linux 상에서 `ktutil` 커맨드로 병합이 가능합니다.
+
+```
+# ktutil
+ktutil:  rkt hdfs.keytab
+ktutil:  rkt yarn.keytab
+ktutil:  wkt merged.keytab
+ktutil:  quit
+```
+
+## Keytab 파일로 로그인
+
+```
+kinit -k -t cloudera.keytab cloudera@DATALAKE
+```
