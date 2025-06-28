@@ -1,6 +1,5 @@
 package io.datadynamics.impala.ldap;
 
-import io.datadynamics.impala.kerberos.HelpCommand;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 

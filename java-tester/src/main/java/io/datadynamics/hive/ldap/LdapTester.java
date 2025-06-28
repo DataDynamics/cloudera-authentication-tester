@@ -1,6 +1,5 @@
 package io.datadynamics.hive.ldap;
 
-import io.datadynamics.hive.kerberos.HelpCommand;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
