@@ -16,4 +16,4 @@ if (-not $principal -or -not $mapuser -or -not $password) {
     exit 1
 }
 
-ktpass -out "$principal".keytab -princ "$principal" -mapuser "$mapuser" -pass "$password" -ptype KRB5_NT_PRINCIPAL -crypto all -mapop set
+ktpass -out $principal.keytab -princ $principal -mapuser $mapuser -pass * -ptype KRB5_NT_PRINCIPAL -crypto all -mapop set
