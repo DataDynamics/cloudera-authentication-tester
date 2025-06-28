@@ -22,18 +22,20 @@ def add_user_and_set_password(args):
     # 2. 사용자 추가 (objectClass 등 AD 필수 속성 포함)
     attributes = {
         'objectClass': ['top', 'person', 'organizationalPerson', 'user'],
-        'cn': f"CN={args.new_username},{args.user_base_dn}",
-        'sAMAccountName': args.new_username,
-        'userPrincipalName': f"{args.new_username}@{args.domain_name}",
-        'displayName': args.new_username,
+        'cn': f"{args.new_username}",
+        'sAMAccountName': f"{args.new_username}",
+        'userPrincipalName': f"{args.new_username}@{args.domain_name.lower()}",
+        'displayName': f"{args.new_username}",
         'givenName': "Test",
         'sn': "User",
-        'mail': f"{args.new_username}@{args.domain_name}",
         'accountExpires': '0',  # Never expires
     }
+    
+    print(attributes)
 
     if user_dn_exists(conn, f"CN={args.new_username},{args.user_base_dn}"):
-        delete_user_dn(conn, f"CN={args.new_username},{args.user_base_dn}")
+        if delete_user_dn(conn, f"CN={args.new_username},{args.user_base_dn}"):
+            print("User deleted.")
 
     conn.add(f"CN={args.new_username},{args.user_base_dn}", attributes=attributes)
     if not conn.result["description"] == "success":
@@ -122,6 +124,8 @@ if __name__ == '__main__':
     parser.add_argument('--new-username-password', required=True, help='신규로 생성할 사용자의 기본 패스워드')
 
     args = parser.parse_args()
+    
+    print(args)
 
     result = add_user_and_set_password(args)
 
