@@ -1,40 +1,41 @@
-from ldap3 import Server, Connection, ALL, MODIFY_REPLACE, Tls, SUBTREE, ALL_ATTRIBUTES, NTLM
+import argparse
 import ssl
+from ldap3 import Server, Connection, ALL, MODIFY_REPLACE, Tls, ALL_ATTRIBUTES, NTLM
+
 
 # LDAP 서버 정보
-server_uri = "ldaps://10.0.1.79:636"
-bind_dn = r"DATALAKE\Administrator"
-bind_password = "Dd98969321$9"
-user_base_dn = "OU=Users,OU=IBK,DC=DATALAKE,DC=NET"
-domain_name = "DATALAKE.NET"
-user_default_password = "@123qwe"
-
-# 추가할 사용자 정보
-new_username = "testuser"
-new_user_cn = "Test User"
-new_user_dn = f"CN={new_user_cn},{user_base_dn}"
-new_user_samaccountname = new_username
+# args.server = "ldaps://10.0.1.79:636"
+# bind_dn = r"DATALAKE\Administrator"
+# bind_password = "@123qwe"
+# user_base_dn = "OU=Users,DC=DATALAKE,DC=NET"
+# domain_name = "DATALAKE.NET"
+# new_username = "honggildong"
+# new_username_password = "@123qwe"
 
 
-def add_user_and_set_password():
+def add_user_and_set_password(args):
     # 1. LDAP 서버 연결 (TLS: 인증서 검증 off, 테스트 목적)
     tls = Tls(validate=ssl.CERT_NONE)
-    server = Server(server_uri, use_ssl=True, get_info=ALL, tls=tls)
-    conn = Connection(server, user=bind_dn, password=bind_password, authentication=NTLM, auto_bind=True)
+    server = Server(args.server, use_ssl=is_ldaps_url(args.server), get_info=ALL, tls=tls)
+    conn = Connection(server, user=args.bind_dn, password=args.bind_password, authentication=NTLM, auto_bind=True)
 
     # 2. 사용자 추가 (objectClass 등 AD 필수 속성 포함)
     attributes = {
         'objectClass': ['top', 'person', 'organizationalPerson', 'user'],
-        'cn': new_user_cn,
-        'sAMAccountName': new_user_samaccountname,
-        'userPrincipalName': f"{new_user_samaccountname}@{domain_name}",
-        'displayName': new_user_cn,
+        'cn': f"CN={args.new_username},{args.user_base_dn}",
+        'sAMAccountName': args.new_username,
+        'userPrincipalName': f"{args.new_username}@{args.domain_name}",
+        'displayName': args.new_username,
         'givenName': "Test",
         'sn': "User",
-        'mail': f"{new_user_samaccountname}@{domain_name}",
+        'mail': f"{args.new_username}@{args.domain_name}",
         'accountExpires': '0',  # Never expires
     }
-    conn.add(new_user_dn, attributes=attributes)
+
+    if user_dn_exists(conn, f"CN={args.new_username},{args.user_base_dn}"):
+        delete_user_dn(conn, f"CN={args.new_username},{args.user_base_dn}")
+
+    conn.add(f"CN={args.new_username},{args.user_base_dn}", attributes=attributes)
     if not conn.result["description"] == "success":
         print(f"User add failed: {conn.result}")
         return False
@@ -42,8 +43,8 @@ def add_user_and_set_password():
     print("User created.")
 
     # 3. 패스워드 설정 (AD는 패스워드 반드시 unicodePwd로, 특수 규칙)
-    unicode_pass = f'"{user_default_password}"'.encode('utf-16-le')
-    conn.modify(new_user_dn, {'unicodePwd': [(MODIFY_REPLACE, [unicode_pass])]})
+    unicode_pass = f'"{args.new_username_password}"'.encode('utf-16-le')
+    conn.modify(f"CN={args.new_username},{args.user_base_dn}", {'unicodePwd': [(MODIFY_REPLACE, [unicode_pass])]})
 
     if not conn.result["description"] == "success":
         print(f"Password set failed: {conn.result}")
@@ -52,20 +53,40 @@ def add_user_and_set_password():
     print("Password set.")
 
     # 4. 계정 활성화 (userAccountControl에서 512: 정상 계정)
-    conn.modify(new_user_dn, {'userAccountControl': [(MODIFY_REPLACE, [512])]})
+    conn.modify(f"CN={args.new_username},{args.user_base_dn}", {'userAccountControl': [(MODIFY_REPLACE, [512])]})
     print("Account enabled.")
 
     conn.unbind()
     return True
 
 
-def authenticate_user(username, password):
-    # 인증: 새로 생성한 계정으로 바인드 시도
-    user = f"{domain_name}\\{username}"
-    tls = Tls(validate=ssl.CERT_NONE)
-    server = Server(server_uri, use_ssl=True, get_info=ALL, tls=tls)
+def delete_user_dn(conn, user_dn) -> bool:
     try:
-        conn = Connection(server, user=user, password=password, authentication=NTLM, auto_bind=True)
+        return conn.delete(user_dn)
+    except Exception:
+        return False
+
+
+def user_dn_exists(conn, user_dn) -> bool:
+    try:
+        conn.search(
+            search_base=user_dn,
+            search_filter='(objectClass=user)',
+            search_scope='BASE',  # DN 하나만 탐색
+            attributes=ALL_ATTRIBUTES
+        )
+        # 검색 결과가 있으면 존재하는 것
+        return len(conn.entries) > 0
+    except Exception:
+        return False
+
+
+def authenticate_user(args):
+    user = f"{args.domain_name}\\{args.new_username}"
+    tls = Tls(validate=ssl.CERT_NONE)
+    server = Server(args.server, use_ssl=is_ldaps_url(args.server), get_info=ALL, tls=tls)
+    try:
+        conn = Connection(server, user=user, password=args.new_username_password, authentication=NTLM, auto_bind=True)
         print("Authentication succeeded.")
         conn.unbind()
         return True
@@ -74,8 +95,36 @@ def authenticate_user(username, password):
         return False
 
 
-if __name__ == "__main__":
-    result = add_user_and_set_password()
+def is_ldaps_url(url: str) -> bool:
+    """
+    Determines if a given URL starts with the "ldaps://" scheme.
+
+    This function checks whether the input URL is using the "ldaps://"
+    protocol. It performs a case-insensitive comparison by converting the
+    input string to lowercase and verifying the prefix.
+
+    :param url: The URL string to check.
+    :type url: str
+    :return: True if the URL starts with "ldaps://", False otherwise.
+    :rtype: bool
+    """
+    return url.lower().startswith("ldaps://")
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='AD LDAP Connection Validator')
+    parser.add_argument('--server', required=True, help='LDAP URL (예; ldaps://10.0.1.79:636)')
+    parser.add_argument('--bind-dn', required=True, help='인증을 위한 Bind DN (AD의 경우; DATALAKE\Administrator)')
+    parser.add_argument('--bind-password', required=True, help='인증을 위한 Bind Password')
+    parser.add_argument('--user-base-dn', required=True, help='사용자가 등록되어 있는 User DN (예; OU=Users,DC=DATALAKE,DC=NET)')
+    parser.add_argument('--domain-name', required=True, help='Active Directory의 Domain Name (예; DATALAKE.NET)')
+    parser.add_argument('--new-username', required=True, help='신규로 생성할 사용자명')
+    parser.add_argument('--new-username-password', required=True, help='신규로 생성할 사용자의 기본 패스워드')
+
+    args = parser.parse_args()
+
+    result = add_user_and_set_password(args)
+
     if result:
-        auth_ok = authenticate_user("testuser", user_default_password)
+        auth_ok = authenticate_user(args)
         print("Final authentication test:", "OK" if auth_ok else "FAILED")
