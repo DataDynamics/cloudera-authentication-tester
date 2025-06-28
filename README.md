@@ -79,7 +79,7 @@ ktpass [-?] | [/out filename] [/princ SPN] [/mapuser target_user] \
     * `KRB5_NT_PRINCIPAL`: 일반적인 사용자 주체 유형입니다. (가장 일반적)
     * `KRB5_NT_SRV_INST`: 서비스 인스턴스 주체 유형입니다. (SPN에 사용)
     * `KRB5_NT_SRV_HST`: 호스트 서비스 주체 유형입니다. (컴퓨터 계정에 사용될 수 있음)
-  * 대부분의 서비스 SPN에는 KRB5_NT_PRINCIPAL을 사용해도 무방합니다.
+  * 대부분의 서비스 SPN에는 `KRB5_NT_PRINCIPAL`을 사용해도 무방합니다.
 * `/kvno <KeyVersionNumber>`:
   * Keytab에 포함될 키 버전 번호(Key Version Number)를 수동으로 지정합니다.
   * 일반적으로 `ktpass`가 자동으로 가장 최신 키 버전을 사용하도록 하는 것이 좋습니다. 이 옵션은 특정 문제 해결 시에만 사용됩니다.
