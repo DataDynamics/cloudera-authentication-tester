@@ -86,7 +86,7 @@ ktpass -out webservice.keytab \
 ```
 
 ```
-ktpass -out user.keytab -princ user@realm -mapuser DATALAKE\user -pass password  -ptype KRB5_NT_PRINSIPAL -kvno 0 -crypto AES256-SHA1
+ktpass -out cloudera.keytab -princ cloudera@DATALAKE.IBK.CO.KR -mapuser DATALAKE_PROD\cloudera -pass Password!! -ptype KRB5_NT_PRINCIPAL -crypto all -mapop set
 ```
 
 ### Cloudera의 Kerbeors Keytab Format
@@ -94,7 +94,31 @@ ktpass -out user.keytab -princ user@realm -mapuser DATALAKE\user -pass password 
 * 기본 형식 : `service[/host]@REALM`
  * 예 : `hdfs/data-node-1.example.com@EXAMPLE.COM`
 
-```
+### Cloudera의 Hadoop Users (user:group) and Kerberos Principals
+
+https://docs.cloudera.com/cdp-private-cloud-base/7.3.1/security-kerberos-authentication/topics/cm_sg_cm_users_principals.html
+
+| Component (Version)      | Unix User ID | Groups            |
+| ------------------------ | ------------ | ----------------- |
+| Cloudera Manager         | cloudera-scm | cloudera-scm      |
+| HDFS                     | hdfs         | hdfs, hadoop      |
+| YARN                     | yarn         | yarn, hadoop      |
+| HBase                    | hbase        | hbase, hadoop     |
+| Hive                     | hive         | hive              |
+| Impala                   | impala       | impala, hive      |
+| Spark                    | spark        | spark             |
+| Kafka                    | kafka        | kafka             |
+| Kudu                     | kudu         | kudu              |
+| ZooKeeper                | zookeeper    | zookeeper         |
+| NiFi                     | nifi         | nifi              |
+
+## Keytab 파일을 생성하는 방법
+
+* Active Directory가 설치되어 있는 윈도에서
+  * `ktpass -out cloudera.keytab -princ cloudera@DATALAKE.IBK.CO.KR -mapuser DATALAKE_PROD\cloudera -pass Password!! -ptype KRB5_NT_PRINCIPAL -crypto all -mapop set`
+* Kerberos가 활성화 되어 있는 Linux에서
+  * 
+
 
 ## Keytab 파일의 Pricipal 확인
 
