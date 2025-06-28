@@ -176,3 +176,27 @@ OR
 
 kinit -k -t cloudera.keytab cloudera@DATALAKE
 ```
+
+## `krb5.conf` 파일 예시
+
+```
+[libdefaults]
+    default_realm = DATALAKE
+    dns_lookup_realm = false
+    dns_lookup_kdc = false
+    ticket_lifetime = 24h
+    renew_lifetime = 7d
+    forwardable = true
+
+[realms]
+    DATALAKE = {
+        kdc = ad.datalake.net
+        kdc = ad.datalake.net
+        admin_server = ad.datalake.net
+        default_domain = datalake.net
+    }
+
+[domain_realm]
+    .datalake.ibk.co.kr = DATALAKE
+    datalake.ibk.co.kr = DATALAKE
+```
