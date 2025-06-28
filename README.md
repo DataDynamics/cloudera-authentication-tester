@@ -170,5 +170,9 @@ ktutil:  quit
 ## Keytab 파일로 로그인
 
 ```
+kinit -k -t cloudera.keytab
+
+OR
+
 kinit -k -t cloudera.keytab cloudera@DATALAKE
 ```
