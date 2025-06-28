@@ -1,5 +1,6 @@
 package io.datadynamics.hdfs;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +35,11 @@ public class Tester {
         Command cmd = CommandFactory.getCommand(cmdName);
         if (cmd == null) {
             System.err.println("알 수 없는 명령: " + cmdName);
+            printHelpAndExit();
+        }
+
+        if (new File(keytab).exists() == false) {
+            System.err.println("Keytab 파일이 존재하지 않습니다. 파일: " + keytab);
             printHelpAndExit();
         }
 
