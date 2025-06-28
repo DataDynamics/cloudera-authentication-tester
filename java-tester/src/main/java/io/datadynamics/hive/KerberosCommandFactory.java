@@ -1,6 +1,6 @@
 package io.datadynamics.hive;
 
-public class CommandFactory {
+public class KerberosCommandFactory {
 
     public static Command getCommand(String name) {
         switch (name) {

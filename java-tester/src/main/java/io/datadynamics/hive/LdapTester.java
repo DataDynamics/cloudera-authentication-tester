@@ -48,7 +48,7 @@ public class LdapTester {
 
         if (i >= args.length) printHelpAndExit();
         String cmdName = args[i++];
-        Command cmd = CommandFactory.getCommand(cmdName);
+        Command cmd = KerberosCommandFactory.getCommand(cmdName);
         if (cmd == null) {
             System.err.println("알 수 없는 명령: " + cmdName);
             printHelpAndExit();

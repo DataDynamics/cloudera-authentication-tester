@@ -4,7 +4,6 @@ import com.nimbusds.jose.util.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +48,7 @@ public class KerberosTester {
 
         if (i >= args.length) printHelpAndExit();
         String cmdName = args[i++];
-        Command cmd = CommandFactory.getCommand(cmdName);
+        Command cmd = KerberosCommandFactory.getCommand(cmdName);
         if (cmd == null) {
             System.err.println("알 수 없는 명령: " + cmdName);
             printHelpAndExit();
